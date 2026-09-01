@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ASWMO — Test Player</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+:root{--bg:#0b0c15;--surface:#12142a;--text:#e4e6f0;--accent:#00e8a0;--gold:#f0c040;--danger:#ff4d6d;--border:rgba(255,255,255,.08);}
+body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(1000px 700px at 20% 0%,#00e8a011,transparent),var(--bg);color:var(--text);min-height:100vh;line-height:1.55;}
+.container{max-width:900px;margin:2rem auto;padding:0 1.2rem;}
+h1{font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:1.5rem 1.8rem;margin-bottom:1rem;}
+.question{font-size:1.05rem;font-weight:500;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.options{display:grid;gap:.5rem;}
+.option{padding:.75rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;font-size:.92rem;}
+.option:hover,.option.selected{border-color:var(--accent);background:rgba(0,232,160,.08);}
+.option.correct{border-color:var(--accent);background:rgba(0,232,160,.1);}
+.option.wrong{border-color:var(--danger);background:rgba(255,77,109,.08);}
+.timer{font-size:2rem;font-weight:800;color:var(--accent);font-family:monospace;}
+button{background:linear-gradient(135deg,var(--accent),#00b87e);color:#0a0c12;border:none;padding:.6rem 1.4rem;border-radius:10px;font-weight:700;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1 id="paperTitle">Test Player</h1>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;flex-wrap:wrap;gap:1rem;">
+<div><div class="timer" id="timer">65:00</div><div style="font-size:.75rem;color:var(--muted);">Timer — Submit anytime</div></div>
+<button onclick="submitTest()">Submit Test</button>
+</div>
+</header>
+<div class="card" id="questionCard">
+<div class="question" id="qText">Loading questions... (Data loaded from all_papers.json — wire with actual JSON)</div>
+<div class="options" id="options"></div>
+</div>
+</div>
+<script>
+// Placeholder — reads localStorage.current_test, loads questions from external JSON if available
+const testInfo = JSON.parse(localStorage.getItem('current_test')||'{"name":"Demo"}');
+document.getElementById('paperTitle').textContent = testInfo.name || 'ASWMO Test';
+// Simple demo: would wire to /all_papers.json in production
+</script>
+</body>
+</html>
