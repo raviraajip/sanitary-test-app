@@ -1,124 +1,77 @@
 <!DOCTYPE html>
-<html lang="hi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ASWMO — Test</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-:root{--bg:#0b0c15;--surface:#12142a;--text:#e4e6f0;--accent:#00e8a0;--gold:#f0c040;--border:rgba(255,255,255,.08);}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(1000px 700px at 20% 0%,#00e8a011,transparent),var(--bg);color:var(--text);min-height:100vh;line-height:1.55;}
+<html lang="hi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>ASWMO — T02 Liquid Waste</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+:root{--bg:#0b0c15;--text:#e4e6f0;--accent:#00e8a0;--gold:#f0c040;--danger:#ff4d6d;--border:rgba(255,255,255,.08);}
+body{font-family:Inter,system-ui,sans-serif;background:radial-gradient(1000px 700px at 20% 0%,#00e8a011,transparent),var(--bg);color:var(--text);min-height:100vh;line-height:1.55;}
 .container{max-width:900px;margin:2rem auto;padding:0 1.2rem;}
 h1{font-size:1.6rem;font-weight:700;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem;}
 .question{font-size:1.05rem;font-weight:500;margin-bottom:.8rem;line-height:1.35;}
 .options{display:grid;gap:.5rem;}
 .option{padding:.7rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;cursor:pointer;font-size:.92rem;transition:.2s;}
-.option:hover{border-color:var(--accent);background:rgba(0,232,160,.08);}
-.option.selected{border-color:var(--accent);background:rgba(0,232,160,.12);font-weight:600;}
-.timer-bar{height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin:1rem 0;}
-.timer-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--accent),#00b87e);transition:width 1s linear;}
+.option:hover,.option.selected{border-color:var(--accent);background:rgba(0,232,160,.12);font-weight:600;}
+.timer{font-family:monospace;font-weight:700;font-size:2rem;color:var(--accent);}
 button{background:linear-gradient(135deg,var(--accent),#00b87e);color:#0a0c12;border:none;padding:.7rem 1.4rem;border-radius:10px;font-weight:700;cursor:pointer;}
-.tag{display:inline-block;padding:.15rem .55rem;border-radius:999px;font-size:.7rem;background:linear-gradient(135deg,var(--accent-2),#9f7bff);color:#fff;margin-right:.3rem;}
-</style>
-</head><body>
+</style></head><body>
 <div class="container">
-<header><h1 id="ptitle">ASWMO Test</h1><div class="tag" id="ptype">Paper</div></header>
+<header><h1 id="ptitle">ASWMO — T02 Liquid Waste</h1><span style="display:inline-block;padding:.15rem .55rem;border-radius:999px;font-size:.7rem;background:linear-gradient(135deg,#7b5cff,#9f7bff);color:#fff;margin-left:.5rem;">T02 Liquid Waste</span></header>
 
-<div class="card" id="timerCard">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem;"><span>Time Remaining</span><span id="timerText" style="font-family:monospace;font-weight:700;font-size:1.2rem;color:var(--accent);">65:00</span></div>
-  <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
-</div>
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;">
+<div><div class="timer" id="timer">65:00</div><div style="font-size:.75rem;color:var(--muted);">Time Remaining</div></div>
+<button onclick="submitTest()">Submit Test</button></div>
+<div style="height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin-top:.5rem;"><div id="bar" style="height:100%;width:100%;background:linear-gradient(90deg,var(--accent),#00b87e);transition:width 1s linear;"></div></div></div>
 
 <div class="card" id="qCard">
-  <div style="font-size:.8rem;color:var(--muted);margin-bottom:.4rem;">Question <span id="qNum">1</span> / <span id="qTotal">65</span></div>
-  <div class="question" id="qText">Loading...</div>
-  <div class="options" id="opts"></div>
-  <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
-    <button onclick="prevQ()">← Prev</button>
-    <button onclick="nextQ()">Next →</button>
-    <button onclick="submitTest()">Submit</button>
-  </div>
+<div style="font-size:.8rem;color:var(--muted);margin-bottom:.4rem;">Question <span id="qNum">1</span> / <span id="qTotal">?</span></div>
+<div class="question" id="qText">Loading...</div>
+<div class="options" id="opts"></div>
+<div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+<button onclick="prev()">← Prev</button><button onclick="next()">Next →</button><button onclick="submitTest()">Submit</button></div>
 </div>
 
-<div class="card hidden" id="resultCard" style="text-align:center;padding:2rem;">
-  <h2 style="color:var(--gold);font-size:2rem;">Test Completed</h2>
-  <div id="scoreDisplay" style="font-size:3rem;font-weight:800;color:var(--accent);margin:1rem 0;"></div>
-  <div id="detailDisplay" style="color:var(--muted);font-size:.95rem;"></div>
-  <div style="margin-top:1rem;"><a href="index.html" style="color:var(--accent);font-weight:600;">← Back to Dashboard</a></div>
+<div class="card hidden" id="resCard" style="text-align:center;padding:2rem;">
+<h2 style="color:var(--gold);font-size:2rem;">Test Completed!</h2>
+<div id="score" style="font-size:3rem;font-weight:800;color:var(--accent);margin:1rem 0;"></div>
+<div id="detail" style="color:var(--muted);font-size:.95rem;"></div>
+<div style="margin-top:1.5rem;"><a href="index.html" style="color:var(--accent);font-weight:600;">← Back to Dashboard</a></div></div>
 </div>
-</div>
-<script type="module">
-// Load questions from static JSON (must be hosted alongside — upload all_papers.json to repo)
-let questions = [];
-let paper = {};
-let idx = 0;
-let answers = {};
-let timerSec = 65*60;
-let timerInterval = null;
+<script>
+let questions=[], idx=0, answers={}, timerSec=65*60, timerInt=null;
+const paperFile='T02 Liquid waste Management.html';
+const paperName='T02 Liquid Waste';
 
-function parseUrl(){const p=new URLSearchParams(location.search); return {id:p.get('id')||'t01', name:p.get('name')||'Paper'}};
-
-function loadQuestions(){
-  // Load from static JSON file (hosted in same repo) and filter by paper reference
-  fetch('all_papers.json').then(r=>r.json()).then(allData => {
-    const paperRef = window.paperFile || document.getElementById('ptype').textContent || '';
-    // Find matching questions
-    let data = allData[paperRef] || allData[Object.keys(allData)[0]] || [];
-    questions = data;
-    document.getElementById('qTotal').textContent = questions.length || 65;
-    if(questions.length>0){renderQ(); startTimer();}
-    else{document.getElementById('qText').textContent='Data loaded — 50 papers available in all_papers.json';}
-  }).catch(err => {
-    // Fallback demo
-    questions = [{q:'Demo: Solid Waste Management Rules 2016 — safe disposal of multi-layered packaging lies with?', options:['Municipal Corp','End consumer','Manufacturer/brand owner','State PCB'], answer:'3'}, {q:'15th BRICS Summit 2023 — which country was NOT among new members?', options:['Saudi Arabia','Egypt','Argentina','Ethiopia'], answer:'4'}];
-    document.getElementById('qTotal').textContent = questions.length;
-    renderQ(); startTimer();
-  });
+function render(){
+  const q=questions[idx];
+  if(!q){document.getElementById('qText').textContent='No data loaded. Check console.';return;}
+  document.getElementById('qNum').textContent=idx+1;
+  document.getElementById('qTotal').textContent=questions.length;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('opts').innerHTML=q.options.map((o,i)=>
+    `<div class="option ${answers[idx]==(i+1)?'selected':''}" onclick="select(${i+1})">${String.fromCharCode(65+i)}. ${o}</div>`
+  ).join('');
 }
-  // Try to load from repo root (relative) — if missing, use placeholder
-  fetch('all_papers.json').then(r=>r.ok?r.json():Promise.reject()).catch(()=>[].map(x=>({q:'Demo Q',options:['A','B','C','D'],answer:'1'})));
-  // For real use, add all_papers.json to repo and wire via fetch
-  // Fallback demo data
-  questions = [
-    {q:'Under SWM Rules 2016, responsibility for multi-layered packaging disposal is with:', options:['Municipal Corp','End consumer','Manufacturer/brand owner','State PCB'], answer:'3'},
-    {q:'15th BRICS Summit (2023) new members included:', options:['Nigeria','Argentina','Ethiopia','All above'], answer:'4'},
-  ];
-  document.getElementById('qTotal').textContent = questions.length;
-  renderQ();
-  startTimer();
-}
+window.select=o=>{answers[idx]=o; render();};
+window.prev=()=>{if(idx>0){idx--; render();}};
+window.next=()=>{if(idx<questions.length-1){idx++; render();}};
 
-function renderQ(){
-  const q = questions[idx];
-  document.getElementById('qNum').textContent = idx+1;
-  document.getElementById('qText').textContent = q.q;
-  const opts = document.getElementById('opts');
-  opts.innerHTML = q.options.map((o,i)=>`<div class="option ${answers[idx]==(i+1)?'selected':''}" onclick="select(${i+1})">${String.fromCharCode(65+i)}. ${o}</div>`).join('');
-}
-window.select = (opt)=>{answers[idx]=opt; renderQ();};
-window.prevQ = ()=>{if(idx>0){idx--; renderQ();}};
-window.nextQ = ()=>{if(idx<questions.length-1){idx++; renderQ();}};
+function submitTest(){clearInterval(timerInt); let c=0; for(let i=0;i<questions.length;i++){if(answers[i]==questions[i].answer)c++;} const pct=Math.round(c/questions.length*100)||0; document.getElementById('qCard').classList.add('hidden'); document.getElementById('resCard').classList.remove('hidden'); document.getElementById('score').textContent=pct+'%'; document.getElementById('detail').innerHTML='<b>${c}/${questions.length}</b> correct • ${Math.round(timerSec/60)} min taken';}
 
-function submitTest(){
-  clearInterval(timerInterval);
-  let correct = 0;
-  for(let i=0;i<questions.length;i++){if(answers[i]==questions[i].answer) correct++;}
-  const pct = Math.round((correct/questions.length)*100);
-  document.getElementById('qCard').classList.add('hidden');
-  document.getElementById('timerCard').classList.add('hidden');
-  document.getElementById('resultCard').classList.remove('hidden');
-  document.getElementById('scoreDisplay').textContent = pct + '%';
-  document.getElementById('detailDisplay').innerHTML = `<b>${correct}/${questions.length}</b> correct • ${Math.round(timerSec/60)} min used • Score saved to Firebase (if auth active)`;
-  // Save to Firebase if user logged in (simplified)
-  try{const user=location.search;/*would use Firebase auth here*/}catch(e){}
-}
+function tick(){timerSec--; document.getElementById('timer').textContent=Math.floor(timerSec/60)+':'+String(timerSec%60).padStart(2,'0'); document.getElementById('bar').style.width=(timerSec/(65*60)*100)+'%'; if(timerSec<=0){clearInterval(timerInt); submitTest();}}
 
-function startTimer(){
-timerInterval=setInterval(()=>{timerSec--; document.getElementById('timerText').textContent=Math.floor(timerSec/60)+':'+String(timerSec%60).padStart(2,'0'); document.getElementById('timerFill').style.width=(timerSec/(65*60)*100)+'%'; if(timerSec<=0){clearInterval(timerInterval); submitTest();}},1000);}
-
-window.onload = ()=>{
-  const p = parseUrl();
-  document.getElementById('ptitle').textContent = p.name;
-  document.getElementById('ptype').textContent = p.id;
-  loadQuestions();
+window.onload=()=>{
+  const safe=paperFile.replace('.html','').replace(' ','-').replace('&','and').replace("'","");
+  document.getElementById('qText').textContent='Loading ${paperName}...';
+  fetch('papers/'+safe+'.json')
+    .then(r=>{if(!r.ok)throw new Error('404:'+r.status); return r.json();})
+    .then(d=>{
+      questions=Array.isArray(d)?d:[];
+      document.getElementById('qTotal').textContent=questions.length;
+      render();
+      timerInt=setInterval(tick,1000);
+    })
+    .catch(e=>{
+      document.getElementById('qText').textContent='Error: '+e.message+'. Fetch URL: papers/'+safe+'.json';
+    });
 };
 </script>
 </body></html>
