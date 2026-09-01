@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>DEBUG</title>
+<style>body{background:#000;color:#0f0;font-family:monospace;padding:1rem;font-size:14px;line-height:1.4;}
+.log{background:#111;padding:.5rem;border-left:3px solid #0f0;margin:.3rem 0;white-space:pre-wrap;word-break:break-all;}
+.err{border-color:#f44;color:#f44;}</style>
+</head><body>
+<h2 style="color:#ff0;">🔍 ASWMO Debug Console</h2>
+<div id="log"></div>
+<script>
+const log = (msg, isErr=false) => {
+  const el = document.createElement('div');
+  el.className = 'log' + (isErr?' err':'');
+  el.textContent = (new Date().toLocaleTimeString()) + ' ' + msg;
+  document.getElementById('log').appendChild(el);
+};
+window.addEventListener('error', e => log('SCRIPT ERROR: ' + e.message + ' @ ' + e.filename + ':' + e.lineno, true));
+log('Page loaded. URL: ' + location.href);
+log('paperFile param: ' + new URLSearchParams(location.search).get('id'));
+
+const paperFile = 'T01 Solid waste Management.html';
+const paperName = 'T01 Solid Waste';
+const safe = paperFile.replace('.html','').replace(' ','-').replace('&','and').replace("'","");
+const url = 'papers/' + safe + '.json';
+log('Constructed URL: ' + url);
+log('Starting fetch...');
+
+fetch(url).then(r => {
+  log('FETCH RESPONSE: status=' + r.status + ' ok=' + r.ok + ' type=' + r.headers.get('content-type'));
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}).then(data => {
+  log('DATA RECEIVED: ' + data.length + ' questions, type=' + Array.isArray(data));
+  log('First Q: ' + data[0].q.substring(0, 60));
+  log('First Q options: ' + JSON.stringify(data[0].options));
+  log('First Q answer: ' + data[0].answer);
+  log('✅ FULL FLOW WORKING');
+}).catch(e => {
+  log('❌ FETCH FAILED: ' + e.message, true);
+  log('Stack: ' + e.stack, true);
+});
+</script>
+</body></html>
