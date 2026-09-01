@@ -39,9 +39,6 @@ button{background:linear-gradient(135deg,var(--accent),#00b87e);color:#0a0c12;bo
 let questions=[], idx=0, answers={}, timerSec=65*60, timerInt=null;
 const paperFile='T01 Solid waste Management.html';
 const paperName='T01 Solid Waste';
-
-function render(){
-  const q=questions[idx];
   if(!q){document.getElementById('qText').textContent='No data loaded. Check console.';return;}
   document.getElementById('qNum').textContent=idx+1;
   document.getElementById('qTotal').textContent=questions.length;
