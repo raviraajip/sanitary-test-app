@@ -75,7 +75,7 @@ function submitTest(){clearInterval(timerInt); let c=0; for(let i=0;i<questions.
 
 function tick(){timerSec--; document.getElementById('timer').textContent=Math.floor(timerSec/60)+':'+String(timerSec%60).padStart(2,'0'); document.getElementById('bar').style.width=(timerSec/(65*60)*100)+'%'; if(timerSec<=0){clearInterval(timerInt); submitTest();}}
 
-window.onload=()=>{
+document.addEventListener("DOMContentLoaded",()=>{
   const safe=paperFile.replace('.html','').replace(' ','-').replace('&','and').replace("'","");
   const url='papers/'+safe+'.json';
   document.getElementById('qText').textContent='Loading... ('+url+')';
