@@ -278,7 +278,7 @@ function renderDashboard(user) {
 
 window.startTest = (id, name) => {
   localStorage.setItem('current_test', JSON.stringify({id, name, startTime: Date.now()}));
-  window.location.href = `test.html?id=${id}&name=${encodeURIComponent(name)}`;
+  window.location.href = `test.html?id=${id}&name=${encodeURIComponent(name)}&v=2`;
 };
 
 async function loadAnalytics() {
