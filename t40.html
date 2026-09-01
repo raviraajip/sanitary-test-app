@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>ASWMO — T40 Non-Tech</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+:root{--bg:#0b0c15;--surface:#12142a;--text:#e4e6f0;--accent:#00e8a0;--gold:#f0c040;--danger:#ff4d6d;--border:rgba(255,255,255,.08);--muted:#8a8fa8;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Inter,system-ui,sans-serif;background:radial-gradient(1000px 700px at 20% 0%,#00e8a011,transparent),var(--bg);color:var(--text);min-height:100vh;line-height:1.55;}
+.container{max-width:900px;margin:2rem auto;padding:0 1.2rem;}
+h1{font-size:1.6rem;font-weight:700;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem;}
+.question{font-size:1.05rem;font-weight:500;margin-bottom:.8rem;line-height:1.35;}
+.options{display:grid;gap:.5rem;}
+.option{padding:.7rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;cursor:pointer;font-size:.92rem;transition:.2s;}
+.option:hover,.option.selected{border-color:var(--accent);background:rgba(0,232,160,.12);font-weight:600;}
+.timer{font-family:monospace;font-weight:700;font-size:2rem;color:var(--accent);}
+button{background:linear-gradient(135deg,var(--accent),#00b87e);color:#0a0c12;border:none;padding:.7rem 1.4rem;border-radius:10px;font-weight:700;cursor:pointer;}
+.hidden{display:none!important}</style>
+</head>
+<body>
+<div class="container">
+<header><h1 id="ptitle">ASWMO — T40 Non-Tech</h1></header>
+
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;">
+<div><div class="timer" id="timer">65:00</div><div style="font-size:.75rem;color:var(--muted);">Time Remaining</div></div>
+<button onclick="submitTest()">Submit Test</button></div>
+<div style="height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin-top:.5rem;"><div id="bar" style="height:100%;width:100%;background:linear-gradient(90deg,var(--accent),#00b87e);transition:width 1s linear;"></div></div></div>
+
+<div class="card" id="qCard">
+<div style="font-size:.8rem;color:var(--muted);margin-bottom:.4rem;">Question <span id="qNum">1</span> / <span id="qTotal">?</span></div>
+<div class="question" id="qText">Loading...</div>
+<div class="options" id="opts"></div>
+<div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+<button onclick="prev()">&#8592; Prev</button><button onclick="next()">Next &#8594;</button><button onclick="submitTest()">Submit</button></div>
+</div>
+
+<div class="card hidden" id="resCard" style="text-align:center;padding:2rem;">
+<h2 style="color:var(--gold);font-size:2rem;">Test Completed!</h2>
+<div id="score" style="font-size:3rem;font-weight:800;color:var(--accent);margin:1rem 0;"></div>
+<div id="detail" style="color:var(--muted);font-size:.95rem;"></div>
+<div style="margin-top:1.5rem;"><a href="index.html" style="color:var(--accent);font-weight:600;">&#8592; Back</a></div>
+</div>
+</div>
+
+<script>
+const DATA=[{"id":"81144","q":"Which Indian city was named the 'Cleanest City' for the 7th consecutive time in Swachh Survekshan 2023?","options":["Surat","Indore","Navi Mumbai","Ambikapur"],"answer":"2"},{"id":"81145","q":"What is the frequency of AC (Alternating Current) mains in India?","options":["60 Hz","50 Hz","110 Hz","220 Hz"],"answer":"2"},{"id":"81146","q":"Which blood group is known as the 'Universal Donor'?","options":["A+","B+","AB+","O-"],"answer":"4"},{"id":"81147","q":"Who was the first Tirthankara of Jainism?","options":["Parshvanatha","Mahavira","Rishabhanatha","Arishtanemi"],"answer":"3"},{"id":"81148","q":"'Galvanization' is the process of coating iron with a thin layer of:","options":["Tin","Zinc","Aluminum","Chromium"],"answer":"2"},{"id":"81149","q":"Which Indian movie won the 'Best Documentary Short Film' at the Oscars 2023?","options":["RRR","The Elephant Whisperers","All That Breathes","Kantara"],"answer":"2"},{"id":"81150","q":"The 'Council of Ministers' is collectively responsible to the:","options":["President","Prime Minister","Lok Sabha","Rajya Sabha"],"answer":"3"},{"id":"81151","q":"Which device is used to measure the 'Purity of Milk' based on its density?","options":["Hydrometer","Lactometer","Hygrometer","Barometer"],"answer":"2"},{"id":"81152","q":"Who led the 1857 revolt in 'Arrah' (Jagdishpur), Bihar?","options":["Amar Singh","Kunwar Singh","Pir Ali","Hare Krishna Singh"],"answer":"2"},{"id":"81153","q":"'Ozone' ( ) is an allotrope of:","options":["Carbon","Oxygen","Nitrogen","Hydrogen"],"answer":"2"},{"id":"81154","q":"In computer terms, 'OCR' stands for:","options":["Optical Character Recognition","Online Computer Registration","Optimal Code Reader","Optical Content Retrieval"],"answer":"1"},{"id":"81155","q":"What is the chemical name of 'Baking Soda'?","options":["Sodium Carbonate","Sodium Bicarbonate","Calcium Sulfate","Sodium Hydroxide"],"answer":"2"},{"id":"81156","q":"Which Article of the Indian Constitution is called the 'Heart and Soul' of the Constitution?","options":["Article 14","Article 19","Article 21","Article 32"],"answer":"4"},{"id":"81157","q":"The 'Isotopes' of an element have:","options":["Same number of neutrons","Same number of protons but different number of neutrons","Same atomic mass","Different atomic numbers"],"answer":"2"},{"id":"81158","q":"India's first 'Undersea Tunnel' was recently opened in which city?","options":["Kochi","Mumbai","Chennai","Kolkata"],"answer":"2"},{"id":"81159","q":"'Light Year' is a unit of:","options":["Time","Speed","Distance","Intensity"],"answer":"3"},{"id":"81160","q":"Which ruler shifted his capital from Rajgir to Pataliputra?","options":["Ajatashatru","Udayin","Bimbisara","Chandragupta Maurya"],"answer":"2"},{"id":"81161","q":"The 'Palk Strait' lies between which two countries?","options":["India and Pakistan","India and Sri Lanka","India and Maldives","India and Myanmar"],"answer":"2"},{"id":"81162","q":"Which chemical is used in 'Artificial Rain'?","options":["Silver Iodide","Silver Nitrate","Potassium Chloride","Dry Ice"],"answer":"1"},{"id":"81163","q":"'Stagflation' is a situation of:","options":["High inflation and high unemployment","Low inflation and low unemployment","High inflation and low unemployment","Low inflation and high unemployment"],"answer":"1"},{"id":"81164","q":"'Lakhpati Didi' scheme, mentioned in the 2024 Interim Budget, aims to empower:","options":["Farmers","Self-Help Group (SHG) women","Students","Small traders"],"answer":"2"},{"id":"81165","q":"Which metal is the best conductor of 'Heat'?","options":["Iron","Lead","Silver","Mercury"],"answer":"3"},{"id":"81166","q":"'HTTP' is a protocol used at which layer of the OSI model?","options":["Network Layer","Transport Layer","Presentation Layer","Application Layer"],"answer":"4"},{"id":"81167","q":"Who was recently elected as the Prime Minister of Pakistan in 2024?","options":["Imran Khan","Shehbaz Sharif","Asif Ali Zardari","Nawaz Sharif"],"answer":"2"},{"id":"81168","q":"The hardest naturally occurring substance on Earth is:","options":["Graphite","Diamond","Silicon Carbide","Iron"],"answer":"2"},{"id":"81169","q":"Which phenomenon is responsible for the 'twinkling of stars'?","options":["Total internal reflection","Atmospheric refraction","Scattering of light","Dispersion"],"answer":"2"},{"id":"81170","q":"'WWW' was invented by:","options":["Bill Gates","Tim Berners-Lee","Steve Jobs","Mark Zuckerberg"],"answer":"2"},{"id":"81171","q":"The 'Lucknow Pact' of 1916 was signed between:","options":["Congress and British Government","Muslim League and British Government","Congress and Muslim League","Moderates and Extremists"],"answer":"3"},{"id":"81172","q":"'Operation Flood' is associated with the production of:","options":["Rice","Wheat","Milk","Fish"],"answer":"3"},{"id":"81173","q":"Who won the 'Grand Cross of the Legion of Honour' (France’s highest honor) in 2023?","options":["Narendra Modi","Droupadi Murmu","Ratan Tata","Amitabh Bachchan"],"answer":"1"},{"id":"81174","q":"Which non-metal is stored in water to prevent it from catching fire in air?","options":["Sodium","White Phosphorus","Red Phosphorus","Sulfur"],"answer":"2"},{"id":"81175","q":"'Satyamev Jayate' is taken from which Upanishad?","options":["Katha Upanishad","Mundaka Upanishad","Chandogya Upanishad","Mandukya Upanishad"],"answer":"2"},{"id":"81176","q":"Which non-metal is a 'Liquid' at room temperature?","options":["Mercury","Bromine","Chlorine","Phosphorus"],"answer":"2"},{"id":"81177","q":"The 'Statue of Social Justice' (B.R. Ambedkar) was recently unveiled in which state?","options":["Maharashtra","Andhra Pradesh","Telangana","Bihar"],"answer":"2"},{"id":"81178","q":"The 'Panchayati Raj' system was first constitutionalized by which amendment?","options":["42nd Amendment","73rd Amendment","74th Amendment","86th Amendment"],"answer":"2"},{"id":"81179","q":"Which gas is predominantly used as 'LPG' (Liquefied Petroleum Gas)?","options":["Methane and Ethane","Propane and Butane","Hydrogen and Acetylene","Carbon Monoxide"],"answer":"2"},{"id":"81180","q":"What is the shortcut key to 'Undo' the last action in Windows?","options":["Ctrl + U","Ctrl + Z","Ctrl + Y","Ctrl + X"],"answer":"2"},{"id":"81181","q":"Deficiency of Vitamin A causes:","options":["Scurvy","Night Blindness","Rickets","Beriberi"],"answer":"2"},{"id":"81182","q":"The 'Gandhi-Irwin Pact' was signed in which year?","options":["1930","1931","1932","1942"],"answer":"2"},{"id":"81183","q":"Which country hosted the 'G7 Summit 2024'?","options":["Japan","Italy","Germany","USA"],"answer":"2"},{"id":"81184","q":"The working of a 'Rocket' is based on the principle of:","options":["Conservation of mass","Conservation of energy","Conservation of linear momentum","Kepler's laws"],"answer":"3"},{"id":"81185","q":"Which part of the human brain controls 'Body Temperature'?","options":["Cerebrum","Cerebellum","Hypothalamus","Medulla"],"answer":"3"},{"id":"81186","q":"'Deficit Financing' means the government borrows money from the:","options":["World Bank","RBI","IMF","Public"],"answer":"2"},{"id":"81187","q":"In Bihar, the 'Mahatma Gandhi Setu' connects Patna with:","options":["Muzaffarpur","Hajipur","Vaishali","Sonepur"],"answer":"2"},{"id":"81188","q":"The 'Curie Point' is the temperature at which:","options":["A metal becomes radioactive","A magnetic material loses its magnetic properties","A liquid boils under pressure","A metal becomes a superconductor"],"answer":"2"},{"id":"81189","q":"Which Indian city is known as the 'Electronic City of India'?","options":["Hyderabad","Bengaluru","Gurugram","Chennai"],"answer":"2"},{"id":"81190","q":"The 'Exercise Dharma Guardian' is a joint military exercise between India and:","options":["USA","Japan","France","Australia"],"answer":"2"},{"id":"81191","q":"Which acid is present in an 'Ant's sting'?","options":["Formic Acid","Acetic Acid","Citric Acid","Oxalic Acid"],"answer":"1"},{"id":"81192","q":"'Ohm's Law' defines the relationship between:","options":["Current and Voltage","Resistance and Power","Voltage and Energy","Capacitance and Charge"],"answer":"1"},{"id":"81193","q":"The 'Reserve Bank of India' was nationalized in which year?","options":["1935","1947","1949","1969"],"answer":"3"},{"id":"81194","q":"Who is the current CEO of YouTube?","options":["Neal Mohan","Satya Nadella","Sundar Pichai","Parag Agrawal"],"answer":"1"},{"id":"81195","q":"The 'Kalinga War' was fought in which year?","options":["261 BC","326 BC","78 AD","58 BC"],"answer":"1"},{"id":"81196","q":"A person is unable to read a newspaper clearly but can see distant objects perfectly. Which lens should be used?","options":["Concave lens","Convex lens","Cylindrical lens","Bifocal lens"],"answer":"2"},{"id":"81197","q":"Which organ in the human body is responsible for producing 'Bile'?","options":["Pancreas","Gallbladder","Liver","Stomach"],"answer":"3"},{"id":"81198","q":"The 'Silk Road' was opened for Indians by which ruler?","options":["Ashoka","Kanishka","Harsha","Chandragupta II"],"answer":"2"},{"id":"81199","q":"When a body falls freely under gravity, its total energy:","options":["Increases","Decreases","Remains constant","First increases then decreases"],"answer":"3"},{"id":"81200","q":"The 'Directive Principles of State Policy' (DPSP) are taken from which country?","options":["USA","UK","Ireland","Canada"],"answer":"3"},{"id":"81201","q":"Which of the following colors of light has the 'shortest' wavelength?","options":["Red","Yellow","Blue","Violet"],"answer":"4"},{"id":"81202","q":"What is the full form of 'PDF'?","options":["Portable Document Format","Personal Data File","Printed Document File","Public Data Format"],"answer":"1"},{"id":"81203","q":"Who was the founder of the 'Swaraj Party'?","options":["C.R. Das and Motilal Nehru","Gandhi and Nehru","Bhagat Singh","Subhash Chandra Bose"],"answer":"1"},{"id":"81204","q":"The chemical formula for 'Plaster of Paris' is:","options":["[Image-based option 1 — see original]","[Image-based option 2 — see original]","[Image-based option 3 — see original]","[Image-based option 4 — see original]"],"answer":"2"},{"id":"81205","q":"Which planet is known as the 'Morning Star'?","options":["Mars","Venus","Mercury","Jupiter"],"answer":"2"},{"id":"81206","q":"The process of converting a liquid into its vapor below its boiling point is:","options":["Sublimation","Evaporation","Condensation","Fusion"],"answer":"2"},{"id":"81207","q":"Which state in India has the lowest 'Population Density' according to Census 2011?","options":["Sikkim","Arunachal Pradesh","Mizoram","Nagaland"],"answer":"2"},{"id":"81208","q":"Which is the 'Primary Memory' of a computer?","options":["HDD","SSD","RAM","DVD"],"answer":"3"}];
+let idx=0, answers={}, timerSec=3900, timerInt=null;
+
+function render(){
+  const q=DATA[idx];
+  if(!q){document.getElementById('qText').textContent='No data.';return;}
+  document.getElementById('qNum').textContent=idx+1;
+  document.getElementById('qTotal').textContent=DATA.length;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('opts').innerHTML=q.options.map((o,i)=>
+    `<div class="option ${answers[idx]==(i+1)?'selected':''}" onclick="select(${i+1})">${String.fromCharCode(65+i)}. ${o}</div>`
+  ).join('');
+}
+window.select=o=>{answers[idx]=o; render();};
+window.prev=()=>{if(idx>0){idx--; render();}};
+window.next=()=>{if(idx<DATA.length-1){idx++; render();}};
+
+function submitTest(){
+  clearInterval(timerInt);
+  let c=0; for(let i=0;i<DATA.length;i++){if(answers[i]==DATA[i].answer)c++;}
+  const pct=Math.round(c/DATA.length*100)||0;
+  document.getElementById('qCard').classList.add('hidden');
+  document.getElementById('resCard').classList.remove('hidden');
+  document.getElementById('score').textContent=pct+'%';
+  document.getElementById('detail').innerHTML='<b>'+c+'/'+DATA.length+'</b> correct';
+}
+
+function tick(){timerSec--; document.getElementById('timer').textContent=Math.floor(timerSec/60)+':'+String(timerSec%60).padStart(2,'0'); document.getElementById('bar').style.width=(timerSec/3900*100)+'%'; if(timerSec<=0){clearInterval(timerInt); submitTest();}}
+
+render(); timerInt=setInterval(tick,1000);
+</script>
+</body></html>
