@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASWMO — Sanitary Waste Management Test Series</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Serif+Devanagari:wght@400;700&display=swap');
+:root{--bg:#0b0c15;--surface:#12142a;--surface-2:#1a1d36;--text:#e4e6f0;--muted:#9ca3b8;--accent:#00e8a0;--accent-2:#7b5cff;--danger:#ff4d6d;--gold:#f0c040;--border:rgba(255,255,255,.08);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(1200px 800px at 10% -10%,#00e8a022 0%,transparent 60%),radial-gradient(800px 600px at 110% 10%,#7b5cff22 0%,transparent 60%),var(--bg);color:var(--text);min-height:100vh;line-height:1.55;}
+.container{max-width:1200px;margin:0 auto;padding:2rem 1.2rem 4rem;}
+header{text-align:center;padding:2rem 0 1.5rem;position:relative;}
+h1{font-family:'Noto Serif Devanagari',Georgia,serif;font-weight:700;font-size:2.6rem;letter-spacing:-0.02em;line-height:1.1;background:linear-gradient(135deg,#fff 40%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.subtitle{color:var(--muted);margin-top:.5rem;font-size:1rem;font-weight:300;}
+.card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:1.6rem 1.8rem;margin-bottom:1.4rem;transition:border .2s ease;}
+.card:hover{border-color:rgba(255,255,255,.14);}
+.card h2{font-size:1.05rem;font-weight:600;margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+.card h2 .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+button{font-family:inherit;font-size:.9rem;background:linear-gradient(135deg,var(--accent),#00b87e);color:#0a0c12;border:none;padding:.6rem 1.2rem;border-radius:8px;font-weight:700;cursor:pointer;transition:all .2s ease;}
+button:hover{box-shadow:0 0 16px rgba(0,232,160,.4);transform:translateY(-1px);}
+button:disabled{opacity:.5;cursor:not-allowed;}
+.btn-secondary{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--border);}
+.btn-secondary:hover{box-shadow:0 0 12px rgba(255,255,255,.08);background:rgba(255,255,255,.1);}
+input{width:100%;padding:.6rem .9rem;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text);font-family:inherit;font-size:.92rem;margin-top:.3rem;outline:none;}
+input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,232,160,.12);}
+label{font-size:.8rem;color:var(--muted);font-weight:500;display:block;margin-top:.5rem;}
+.table{width:100%;border-collapse:collapse;margin-top:.6rem;}
+.table th,.table td{padding:.55rem .7rem;text-align:left;font-size:.88rem;border-bottom:1px solid var(--border);}
+.table th{color:var(--muted);font-weight:500;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;}
+.badge{display:inline-block;padding:.15rem .55rem;border-radius:999px;font-size:.72rem;font-weight:600;background:linear-gradient(135deg,var(--accent-2),#9f7bff);color:#fff;}
+.leaderboard-row{display:flex;align-items:center;gap:.7rem;padding:.55rem .7rem;border-radius:10px;background:rgba(255,255,255,.02);margin-bottom:.3rem;border:1px solid var(--border);}
+.leaderboard-row img{width:32px;height:32px;border-radius:50%;object-fit:cover;}
+.tabs{display:flex;gap:.3rem;margin-bottom:1rem;flex-wrap:wrap;}
+.tab{background:rgba(255,255,255,.04);color:var(--muted);padding:.4rem .8rem;border-radius:8px;cursor:pointer;font-size:.85rem;border:1px solid var(--border);}
+.tab.active{background:linear-gradient(135deg,var(--accent),#00b87e);color:#0a0c12;border-color:transparent;font-weight:600;}
+.hidden{display:none;}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;}
+.user-box{display:flex;align-items:center;gap:.7rem;}
+.user-box img{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--border);}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin-top:1rem;}
+.stat{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center;}
+.stat .num{font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat .label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:.2rem;}
+.msg{padding:.5rem .8rem;border-radius:8px;margin-top:.6rem;font-size:.85rem;}
+.msg.error{background:rgba(255,77,109,.1);border:1px solid rgba(255,77,109,.3);color:var(--danger);}
+.msg.success{background:rgba(0,232,160,.1);border:1px solid rgba(0,232,160,.3);color:var(--accent);}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(8px);}
+.modal-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:380px;width:90%;}
+.btn-google{width:100%;display:flex;align-items:center;justify-content:center;gap:.6rem;background:#fff;color:#3c4043;border:1px solid var(--border);font-weight:600;padding:.65rem 1rem;border-radius:8px;margin-top:.9rem;}
+.btn-google:hover{box-shadow:0 0 12px rgba(255,255,255,.25);transform:translateY(-1px);}
+.divider{display:flex;align-items:center;gap:.7rem;margin:1rem 0;color:var(--muted);font-size:.78rem;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>ASWMO — Sanitary Waste Management</h1>
+    <p class="subtitle">Mock Papers, Topic Tests & Full Length Test Series</p>
+  </header>
+
+  <!-- AUTH SECTION -->
+  <section id="auth-section" class="card">
+    <div class="tabs">
+      <div class="tab active" onclick="switchAuth('login')">Login</div>
+      <div class="tab" onclick="switchAuth('signup')">Sign Up</div>
+    </div>
+
+    <button type="button" class="btn-google" onclick="googleSignIn()">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.7 29.4 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.8 1.1 8 3l5.7-5.7C34.6 6.1 29.6 4 24 4c-7.7 0-14.3 4.4-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.3-5.1l-6.6-5.6C29.6 35 26.9 36 24 36c-5.4 0-9.9-3.3-11.3-7.9l-6.6 5.1C9.6 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.7 2-2 3.7-3.6 5l6.6 5.6C41.6 35.9 44 30.5 44 24c0-1.3-.1-2.7-.4-3.5z"/></svg>
+      Continue with Google
+    </button>
+    <div class="divider">or use email</div>
+
+    <form id="loginForm">
+      <label>Email</label>
+      <input id="loginEmail" type="email" required>
+      <label>Password</label>
+      <input id="loginPass" type="password" required minlength="6">
+      <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+        <button type="submit">Login</button>
+        <button type="button" class="btn-secondary" onclick="resetPassword()">Reset Password</button>
+      </div>
+      <div id="loginMsg"></div>
+    </form>
+
+    <form id="signupForm" class="hidden">
+      <label>Full Name</label>
+      <input id="signupName" required>
+      <label>Email</label>
+      <input id="signupEmail" type="email" required>
+      <label>Password (min 6)</label>
+      <input id="signupPass" type="password" required minlength="6">
+      <div style="margin-top:1rem;">
+        <button type="submit">Create Account</button>
+      </div>
+      <div id="signupMsg"></div>
+    </form>
+  </section>
+
+  <!-- APP SECTION -->
+  <div id="app-section" class="hidden">
+    <div class="topbar">
+      <div class="user-box">
+        <img id="userAvatar" src="" alt="">
+        <div>
+          <div id="userName" style="font-weight:700;font-size:.95rem;">User</div>
+          <div id="userEmail" style="font-size:.75rem;color:var(--muted);">email</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:.5rem;">
+        <button class="btn-secondary" onclick="showView('dashboard')">Dashboard</button>
+        <button class="btn-secondary" onclick="showView('analytics')">My Analytics</button>
+        <button class="btn-secondary" onclick="showView('leaderboard')">Leaderboard</button>
+        <button class="btn-secondary" onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD: tests list -->
+    <div id="view-dashboard">
+      <section class="card">
+        <h2><span class="dot"></span> Test Series — Choose Paper</h2>
+        <table class="table">
+          <thead><tr><th>Paper</th><th>Questions</th><th>Type</th><th>Action</th></tr></thead>
+          <tbody id="test-table"></tbody>
+        </table>
+      </section>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div id="view-analytics" class="hidden">
+      <section class="card">
+        <h2><span class="dot"></span> My Performance Analytics</h2>
+        <div class="stat-grid" id="myStats"></div>
+      </section>
+      <section class="card">
+        <h2><span class="dot"></span> Recent Attempts</h2>
+        <div id="attemptsList"></div>
+      </section>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div id="view-leaderboard" class="hidden">
+      <section class="card">
+        <h2><span class="dot"></span> Global Leaderboard <span style="font-size:.85rem;color:var(--muted);font-weight:400;">Top 20</span></h2>
+        <div id="globalLB"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updateProfile, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, addDoc, collection, query, where, orderBy, limit, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBGTo-FSNWfBBOy_NyQHITmU0MzBaEKh_0",
+  authDomain: "sanitary-test-app.firebaseapp.com",
+  projectId: "sanitary-test-app",
+  storageBucket: "sanitary-test-app.firebasestorage.app",
+  messagingSenderId: "440603469900",
+  appId: "1:440603469900:web:956d5f825ad4fbdd58ece9",
+  measurementId: "G-DL7C9R4PZF"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
+
+const TESTS = [
+  {id:'mock-1',name:'Mock-1',q:125,type:'Mock Paper',file:'Mock-1 Paper-I.html'},
+  {id:'mock-2',name:'Mock-2',q:125,type:'Mock Paper',file:'Mock-2 Paper-I.html'},
+  {id:'mock-3',name:'Mock-3',q:125,type:'Mock Paper',file:'Mock-3 Paper-I.html'},
+  {id:'mock-4',name:'Mock-4',q:125,type:'Mock Paper',file:'Mock-4 Paper-I.html'},
+  {id:'mock-5',name:'Mock-5',q:125,type:'Mock Paper',file:'Mock-5 Paper-I.html'},
+  {id:'t01',name:'T01 Solid Waste',q:65,type:'Topic',file:'T01 Solid waste Management.html'},
+  {id:'t02',name:'T02 Liquid Waste',q:65,type:'Topic',file:'T02 Liquid waste Management.html'},
+  {id:'t03',name:'T03 Hazardous Waste',q:65,type:'Topic',file:'T03 Hazardous Waste Management.html'},
+  {id:'t04',name:'T04 WMR + EIA',q:65,type:'Topic',file:'T04_Waste_Management_Rule_+_Environment_Impact_Assessment_&_Clearance.html'},
+  {id:'t05',name:'T05 Solid Waste',q:65,type:'Topic',file:'T05 Solid waste Management.html'},
+  {id:'t06',name:'T06 Liquid Waste',q:65,type:'Topic',file:'T06 Liquid waste Management.html'},
+  {id:'t07',name:'T07 HWM + Non-Tech',q:65,type:'Topic',file:'T07 Hazardous Waste Management + Non-Tech.html'},
+  {id:'t08',name:'T08 WMR + Env',q:65,type:'Topic',file:'T08 WMR + Env. Assessment & Clearance + Non-Tech.html'},
+  {id:'t09',name:'T09 SWM + LWM',q:65,type:'Topic',file:'T09 SWM + LWM.html'},
+  {id:'t10',name:'T10 HWM + WMR',q:65,type:'Topic',file:'T10 HWM + WMR + Env. Assessment & Clearances.html'},
+  {id:'t11',name:'T11 Science+Geo+Polity',q:65,type:'Topic',file:'T11 Science + Geography + Polity.html'},
+  {id:'t12',name:'T12 SWM + WMR',q:65,type:'Topic',file:'T12 SWM + WMR + Env. Assessmnet & Clearances.html'},
+  {id:'t13',name:'T13 Current+Geo+Polity',q:65,type:'Topic',file:'T13 Current + Geography + Polity.html'},
+  {id:'t14',name:'T14 LWM + HWM',q:65,type:'Topic',file:'T14 LHM +HWM.html'},
+  {id:'t15',name:'T15 Computer+Science',q:65,type:'Topic',file:'T15 Computer + Science.html'},
+  {id:'t16',name:'T16 SWM + HWM',q:65,type:'Topic',file:'T16 SWM+HWM+WMR.html'},
+  {id:'t17',name:'T17 Full Test-Tech',q:65,type:'Full Length',file:'T17 Full Length Test-Series Technical.html'},
+  {id:'t18',name:'T18 Non-Tech',q:65,type:'Full Length',file:'T18 Full Length Test-Series NonTech Part.html'},
+  {id:'t19',name:'T19 Full Test-Tech',q:65,type:'Full Length',file:'T19 Full Length Test-Series Technical.html'},
+  {id:'t20',name:'T20 Non-Tech',q:65,type:'Full Length',file:'T20 Full Length Test-Series NonTech Part.html'},
+  {id:'t21',name:'T21 Full Test-Tech',q:65,type:'Full Length',file:'T21 Full Length Test-Series Technical.html'},
+  {id:'t22',name:'T22 Non-Tech',q:65,type:'Full Length',file:'T22 Full Length Test-Series NonTech Part.html'},
+  {id:'t23',name:'T23 Full Test-Tech',q:65,type:'Full Length',file:'T23 Full Length Test-Series Technical.html'},
+  {id:'t24',name:'T24 Non-Tech',q:65,type:'Full Length',file:'T24 Full Length Test-Series NonTech Part.html'},
+  {id:'t25',name:'T25 Full Test-Tech',q:65,type:'Full Length',file:'T25 Full Length Test-Series Technical.html'},
+  {id:'t26',name:'T26 Non-Tech',q:65,type:'Full Length',file:'T26 Full Length Test-Series NonTech Part.html'},
+  {id:'t27',name:'T27 Full Test-Tech',q:65,type:'Full Length',file:'T27 Full Length Test-Series Technical.html'},
+  {id:'t28',name:'T28 Non-Tech',q:65,type:'Full Length',file:'T28 Full Length Test-Series NonTech Part.html'},
+  {id:'t29',name:'T29 Full Test-Tech',q:65,type:'Full Length',file:'T29 Full Length Test-Series Technical.html'},
+  {id:'t30',name:'T30 Non-Tech',q:65,type:'Full Length',file:'T30 Full Length Test-Series NonTech Part.html'},
+  {id:'t31',name:'T31 Full Test-Tech',q:65,type:'Full Length',file:'T31 Full Length Test-Series Technical.html'},
+  {id:'t32',name:'T32 Non-Tech',q:65,type:'Full Length',file:'T32 Full Length Test-Series NonTech Part.html'},
+  {id:'t33',name:'T33 Full Test-Tech',q:65,type:'Full Length',file:'T33 Full Length Test-Series Technical.html'},
+  {id:'t34',name:'T34 Non-Tech',q:65,type:'Full Length',file:'T34 Full Length Test-Series NonTech.html'},
+  {id:'t35',name:'T35 Full Test-Tech',q:65,type:'Full Length',file:'T35 Full Length Test-Series Technical.html'},
+  {id:'t36',name:'T36 Non-Tech',q:65,type:'Full Length',file:'T36 Full Length Test-Series NonTech.html'},
+  {id:'t37',name:'T37 Full Test-Tech',q:65,type:'Full Length',file:'T37 Full Length Test-Series Technical.html'},
+  {id:'t38',name:'T38 Non-Tech',q:65,type:'Full Length',file:'T38 Full Length Test-Series NonTech.html'},
+  {id:'t39',name:'T39 Full Test-Tech',q:65,type:'Full Length',file:'T39 Full Length Test-Series Technical.html'},
+  {id:'t40',name:'T40 Non-Tech',q:65,type:'Full Length',file:'T40 Full Length Test-Series NonTech.html'},
+  {id:'t41',name:'T41 Full Test-Tech',q:65,type:'Full Length',file:'T41 Full Length Test-Series Technical.html'},
+  {id:'t42',name:'T42 Non-Tech',q:65,type:'Full Length',file:'T42 Full Length Test-Series NonTech.html'},
+  {id:'t43',name:'T43 Full Test-Tech',q:65,type:'Full Length',file:'T43 Full Length Test-Series Technical.html'},
+  {id:'t44',name:'T44 Non-Tech',q:65,type:'Full Length',file:'T44 Full Length Test-Series NonTech.html'},
+  {id:'mock-1-ii',name:'Mock-1 Paper-II',q:125,type:'Mock Paper-II',file:'Mock-1 Paper-II.html'},
+  {id:'mock-2-ii',name:'Mock-2 Paper-II',q:125,type:'Mock Paper-II',file:'Mock-2 Paper-II.html'},
+  {id:'mock-3-ii',name:'Mock-3 Paper-II',q:125,type:'Mock Paper-II',file:'Mock-3 Paper-II.html'},
+  {id:'mock-4-ii',name:'Mock-4 Paper-II',q:125,type:'Mock Paper-II',file:'Mock-4 Paper-II.html'},
+  {id:'mock-5-ii',name:'Mock-5 Paper-II',q:125,type:'Mock Paper-II',file:'Mock-5 Paper-II.html'},
+];
+
+window.switchAuth = (mode) => {
+  document.getElementById('loginForm').classList.toggle('hidden', mode !== 'login');
+  document.getElementById('signupForm').classList.toggle('hidden', mode !== 'signup');
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (mode==='login'&&i===0)||(mode==='signup'&&i===1)));
+};
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const pass = document.getElementById('loginPass').value;
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch (err) {
+    document.getElementById('loginMsg').innerHTML = `<div class="msg error">${err.message}</div>`;
+  }
+});
+
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('signupName').value;
+  const email = document.getElementById('signupEmail').value;
+  const pass = document.getElementById('signupPass').value;
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await updateProfile(cred.user, {displayName: name});
+    await setDoc(doc(db, 'profiles', cred.user.uid), {
+      full_name: name, email, created_at: new Date().toISOString()
+    });
+  } catch (err) {
+    document.getElementById('signupMsg').innerHTML = `<div class="msg error">${err.message}</div>`;
+  }
+});
+
+window.googleSignIn = async () => {
+  try {
+    const cred = await signInWithPopup(auth, googleProvider);
+    const user = cred.user;
+    const profileRef = doc(db, 'profiles', user.uid);
+    const existing = await getDoc(profileRef);
+    if (!existing.exists()) {
+      await setDoc(profileRef, {
+        full_name: user.displayName || 'User',
+        email: user.email,
+        created_at: new Date().toISOString()
+      });
+    }
+  } catch (err) {
+    document.getElementById('loginMsg').innerHTML = `<div class="msg error">${err.message}</div>`;
+  }
+};
+
+window.resetPassword = async () => {
+  const email = document.getElementById('loginEmail').value;
+  if (!email) return alert('Enter email first');
+  try { await sendPasswordResetEmail(auth, email); alert('Reset email sent'); }
+  catch (err) { alert(err.message); }
+};
+
+window.logout = async () => { await signOut(auth); location.reload(); };
+
+window.showView = (v) => {
+  ['dashboard','analytics','leaderboard'].forEach(x => {
+    document.getElementById('view-'+x).classList.toggle('hidden', x!==v);
+  });
+  if (v === 'analytics') loadAnalytics();
+  if (v === 'leaderboard') loadLeaderboard();
+};
+
+function renderDashboard(user) {
+  const tbody = document.getElementById('test-table');
+  tbody.innerHTML = TESTS.map(t => `<tr>
+    <td>${t.name}</td>
+    <td>${t.q}</td>
+    <td><span class="badge">${t.type}</span></td>
+    <td><button onclick="startTest('${t.id}','${t.name}')">Start</button></td>
+  </tr>`).join('');
+}
+
+window.startTest = (id, name) => {
+  localStorage.setItem('current_test', JSON.stringify({id, name, startTime: Date.now()}));
+  // Link to self-contained generated pages (with cache-bust)
+window.location.href = `${id}.html?v=${Date.now()}`;
+};
+
+async function loadAnalytics() {
+  const user = auth.currentUser;
+  if (!user) return;
+  const q = query(collection(db, 'attempts'), where('userId', '==', user.uid));
+  const snap = await getDocs(q);
+  const attempts = [];
+  snap.forEach(d => attempts.push(d.data()));
+  attempts.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+
+  const total = attempts.length;
+  const avgAccuracy = total ? Math.round(attempts.reduce((s,a)=>s+(a.accuracy||0),0)/total) : 0;
+  const best = total ? Math.max(...attempts.map(a=>a.accuracy||0)) : 0;
+  const totalTime = attempts.reduce((s,a)=>s+(a.time_taken||0),0);
+
+  document.getElementById('myStats').innerHTML = `
+    <div class="stat"><div class="num">${total}</div><div class="label">Total Attempts</div></div>
+    <div class="stat"><div class="num">${avgAccuracy}%</div><div class="label">Avg Accuracy</div></div>
+    <div class="stat"><div class="num">${best}%</div><div class="label">Best Score</div></div>
+    <div class="stat"><div class="num">${Math.round(totalTime/60)}m</div><div class="label">Total Time</div></div>
+  `;
+
+  document.getElementById('attemptsList').innerHTML = attempts.length ?
+    attempts.slice(0,20).map(a => {
+      const when = a.created_at?.toDate ? a.created_at.toDate().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}) : '—';
+      return `<div class="leaderboard-row" style="display:flex;justify-content:space-between;"><div><b>${a.test_name||'Test'}</b><div style="font-size:.78rem;color:var(--muted);">${when}</div></div><div style="text-align:right;"><b>${a.accuracy||0}%</b><div style="font-size:.75rem;color:var(--muted);">${a.correct||0}/${a.total_questions||0} • ${Math.round((a.time_taken||0)/60)}m</div></div></div>`;
+    }).join('')
+    : '<p style="color:var(--muted);">No attempts yet.</p>';
+}
+
+async function loadLeaderboard() {
+  const q = query(collection(db, 'attempts'), orderBy('accuracy', 'desc'), limit(20));
+  const snap = await getDocs(q);
+  const html = [];
+  snap.forEach(d => {
+    const a = d.data();
+    html.push(`<div class="leaderboard-row">
+      <div style="font-weight:800;color:var(--gold);min-width:30px;">#${html.length+1}</div>
+      <div style="flex:1;"><div style="font-weight:600;font-size:.92rem;">${a.user_name||'Anonymous'}</div>
+      <div style="font-size:.78rem;color:var(--muted);">${a.test_name||'Test'}</div></div>
+      <div style="font-weight:700;color:var(--accent);">${a.accuracy||0}%</div>
+    </div>`);
+  });
+  document.getElementById('globalLB').innerHTML = html.length ? html.join('') : '<p style="color:var(--muted);">No attempts yet.</p>';
+}
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    document.getElementById('auth-section').classList.add('hidden');
+    document.getElementById('app-section').classList.remove('hidden');
+    document.getElementById('userName').textContent = user.displayName || 'User';
+    document.getElementById('userEmail').textContent = user.email;
+    document.getElementById('userAvatar').src = user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.email}`;
+    renderDashboard(user);
+  } else {
+    document.getElementById('auth-section').classList.remove('hidden');
+    document.getElementById('app-section').classList.add('hidden');
+  }
+});
+</script>
+</body>
+</html>
